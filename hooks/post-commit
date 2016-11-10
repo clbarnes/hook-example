@@ -1,0 +1,24 @@
+#!/bin/bash
+DIR=$(git rev-parse --show-toplevel)
+SCRIPT="$DIR/change_file.sh"  # name of the script you want to run, which will modify a file
+CHANGED=""  # name of the file you want to modify with your script
+
+# echo "Running post-commit"
+if [ -e "$DIR/.commit" ]
+    then
+    # echo "Found .commit, modifying $CHANGED"
+
+    $SCRIPT
+   
+    if [[ $(git status --porcelain) == *"$CHANGED"* ]]
+    then
+        # echo "Committing modified file"
+        git add $CHANGED
+        rm $DIR/.commit
+        git commit --amend --no-verify -C HEAD
+    else
+        # echo "File already up to date"
+        rm $DIR/.commit
+    fi
+fi
+exit

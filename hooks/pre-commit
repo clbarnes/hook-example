@@ -1,0 +1,5 @@
+#!/bin/bash
+DIR=$(git rev-parse --show-toplevel)
+# echo "Running pre-commit"
+touch $DIR/.commit
+exit
